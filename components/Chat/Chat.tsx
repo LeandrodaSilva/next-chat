@@ -31,7 +31,7 @@ function Chat() {
   const [listObserver, setListObserver] = React.useState<MutationObserver | null>(null);
   const [stream, setStream] = React.useState<MediaStream | null>(null);
   const name = React.useMemo(() => generateName(), []);
-
+  const [isRecording, setIsRecording] = React.useState(false);
   React.useEffect(() => {
     setWebsocket(createWebsocket());
   }, []);
@@ -231,15 +231,13 @@ function Chat() {
             let target = event.target as HTMLButtonElement;
             if (stream) {
               stream.getTracks().forEach(track => track.stop());
-              target.innerText = 'Falar';
               setStream(null);
             } else {
               recordAudio();
-              target.innerText = 'Encerrar';
             }
           }}
         >
-          Falar
+          {stream === null ? "Falar" : "Encerrar"}
         </button>
       </div>
     </div>
