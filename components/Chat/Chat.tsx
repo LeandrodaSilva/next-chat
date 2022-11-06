@@ -49,10 +49,11 @@ function Chat() {
         });
       });
       websocket.addEventListener("message", (event) => {
+        console.log("Message from server ", event);
         if (typeof event.data === 'string') {
           try {
             let message = JSON.parse(event.data);
-              addMessage(message);
+            addMessage(message);
           } catch (e) {
             addMessage({
               type: "text",
@@ -61,7 +62,7 @@ function Chat() {
           }
         } else {
           addMessage({
-            type: "audio",
+            type: "blob",
             data: event.data
           });
         }
@@ -81,12 +82,19 @@ function Chat() {
 
   const renderMessage = (message: ISocketMessage, index: number) => {
     switch (message.type) {
-      case "audio":
+      case "audio": {
+        let decoded = atob(message.data);
+        let array = new Uint8Array(decoded.length);
+        for (let i = 0; i < decoded.length; i++) {
+          array[i] = decoded.charCodeAt(i);
+        }
+        const blob = new Blob([array], { type: "audio/webm" });
         return (
           <li key={index} className={styles.listItem}>
-            <audio controls src={URL.createObjectURL(message.data)} />
+            <audio controls src={URL.createObjectURL(blob)} />
           </li>
         );
+      }
       case 'text':
       default:
         return <li key={index} className={styles.listItem}>{message.data}</li>
@@ -119,8 +127,18 @@ function Chat() {
 
      recorder.start();
 
-     recorder.onstop = (e) => {
-       websocket.send(new Blob(data, {type: 'audio/webm'}));
+     recorder.onstop = async (e) => {
+       let blob = new Blob(data, {type: 'audio/webm'});
+       blob.arrayBuffer().then((buffer) => {
+         let array = new Uint8Array(buffer);
+         // @ts-ignore
+         let encoded = btoa(String.fromCharCode(...array));
+          let message: ISocketMessage = {
+            type: "audio",
+            data: encoded,
+          }
+          websocket.send(JSON.stringify(message));
+       });
      }
    }
   }, [websocket]);
