@@ -12,7 +12,7 @@ function Chat() {
   const [stream, setStream] = React.useState<MediaStream | null>(null);
 
   React.useEffect(() => {
-    setWebsocket(new WebSocket("wss://socket-deno.deno.dev"));
+    setWebsocket(new WebSocket("wss://socket.leandrodasilva.dev"));
   }, []);
 
   React.useEffect(() => {
