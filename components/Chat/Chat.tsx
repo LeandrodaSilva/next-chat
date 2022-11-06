@@ -1,6 +1,10 @@
 import React, {useCallback} from 'react';
 import styles from '../../styles/Chat.module.css';
 
+const createWebsocket = () => {
+  return new WebSocket("wss://socket.leandrodasilva.dev");
+}
+
 function Chat() {
   const sendButtonRef = React.useRef<HTMLButtonElement>(null);
   const messageInputRef = React.useRef<HTMLInputElement>(null);
@@ -12,7 +16,7 @@ function Chat() {
   const [stream, setStream] = React.useState<MediaStream | null>(null);
 
   React.useEffect(() => {
-    setWebsocket(new WebSocket("wss://socket.leandrodasilva.dev"));
+    setWebsocket(createWebsocket());
   }, []);
 
   React.useEffect(() => {
@@ -49,7 +53,6 @@ function Chat() {
         });
       });
       websocket.addEventListener("message", (event) => {
-        console.log("Message from server ", event);
         if (typeof event.data === 'string') {
           try {
             let message = JSON.parse(event.data);
@@ -67,6 +70,8 @@ function Chat() {
           });
         }
       });
+    } else {
+      setWebsocket(createWebsocket());
     }
 
     return () => {
@@ -107,7 +112,13 @@ function Chat() {
         type: "text",
         data: messageInputRef.current.value,
       }
-      websocket.send(JSON.stringify(message));
+      try {
+        websocket.send(JSON.stringify(message));
+      } catch (e) {
+        console.error(e);
+        setWebsocket(createWebsocket());
+        websocket.send(JSON.stringify(message));
+      }
       messageInputRef.current.value = "";
       messageInputRef.current.focus();
       setSendButtonDisabled(true);
