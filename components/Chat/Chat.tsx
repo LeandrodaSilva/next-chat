@@ -64,13 +64,15 @@ function Chat() {
   React.useEffect(() => {
     if (websocket) {
       websocket.addEventListener("open", (event) => {
-        addMessage({
-          type: "text",
-          metadata: {
-            user_name: name,
-          },
-          data: `Has joined the chat`,
-        });
+        websocket.send(JSON.stringify(
+          {
+            type: "text",
+            metadata: {
+              user_name: name,
+            },
+            data: `Has joined the chat`,
+          }
+        ));
       });
       websocket.addEventListener("message", (event) => {
         if (typeof event.data === 'string') {
