@@ -38,8 +38,21 @@
     background: green;
     border: 1px solid #ccc;
     border-radius: 10px;
-    padding: 5px;
+    padding: 20px;
     color: white;
+}
+
+.listItem p {
+    text-decoration: underline;
+    font-weight: bold;
+    margin: 0 0 10px;
+}
+
+.listItemME {
+    background: white;
+    color: green;
+    border-color: green;
+    margin-left: auto;
 }
 
 .typingInput {
