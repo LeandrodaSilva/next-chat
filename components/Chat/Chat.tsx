@@ -1,5 +1,8 @@
 import React, {useCallback} from 'react';
 import styles from '../../styles/Chat.module.css';
+import MicrophoneIcon from "../Icons/Microphone/Microphone";
+import StopIcon from "../Icons/Stop/Stop";
+import SendIcon from "../Icons/Send/Send";
 
 const createWebsocket = () => {
   return new WebSocket("wss://socket.leandrodasilva.dev");
@@ -27,11 +30,11 @@ function Chat() {
   const listRef = React.useRef<HTMLUListElement>(null);
   const [messages, setMessages] = React.useState<ISocketMessage[]>([]);
   const [websocket, setWebsocket] = React.useState<WebSocket | null>(null);
-  const [sendButtonDisabled, setSendButtonDisabled] = React.useState<boolean>(true);
   const [listObserver, setListObserver] = React.useState<MutationObserver | null>(null);
   const [stream, setStream] = React.useState<MediaStream | null>(null);
   const name = React.useMemo(() => generateName(), []);
-  const [isRecording, setIsRecording] = React.useState(false);
+  const [inputText, setInputText] = React.useState<string>('');
+
   React.useEffect(() => {
     setWebsocket(createWebsocket());
   }, []);
@@ -158,7 +161,7 @@ function Chat() {
       }
       messageInputRef.current.value = "";
       messageInputRef.current.focus();
-      setSendButtonDisabled(true);
+      setInputText('');
     }
   }, [websocket, name]);
 
@@ -192,7 +195,7 @@ function Chat() {
   }, [websocket]);
 
   return (
-    <div id="root" className={styles.container}>
+    <div className={styles.container}>
       <ul
         ref={listRef}
         className={styles.list}
@@ -205,40 +208,46 @@ function Chat() {
           ref={messageInputRef}
           className={styles.typingInput}
           type="text"
+          onChange={(e) => {
+            setInputText(e.target.value);
+          }}
           onKeyUp={(event) => {
             let value = (event.target as HTMLInputElement).value;
-            setSendButtonDisabled(value.length === 0);
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && value.length > 0) {
               sendMessage();
             }
           }}
         />
-        <button
-          id="send-btn"
-          ref={sendButtonRef}
-          className={styles.button}
-          type="button"
-          onClick={sendMessage}
-          disabled={sendButtonDisabled}
-        >
-          Enviar
-        </button>
-        <button
-          id="speak-btn"
-          className={styles.button}
-          type="button"
-          onClick={event => {
-            let target = event.target as HTMLButtonElement;
-            if (stream) {
-              stream.getTracks().forEach(track => track.stop());
-              setStream(null);
-            } else {
-              recordAudio();
-            }
-          }}
-        >
-          {stream === null ? "Falar" : "Encerrar"}
-        </button>
+        {inputText.length > 0 && (
+          <button
+            ref={sendButtonRef}
+            className={styles.button}
+            type="button"
+            onClick={sendMessage}
+          >
+            <SendIcon />
+          </button>
+        )}
+        {inputText.length === 0 && (
+          <button
+            className={styles.button}
+            type="button"
+            onClick={event => {
+              if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                setStream(null);
+              } else {
+                recordAudio();
+              }
+            }}
+          >
+            {stream === null ? (
+              <MicrophoneIcon />
+            ) : (
+              <StopIcon />
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

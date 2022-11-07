@@ -5,41 +5,46 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #f7f7f7;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='72' viewBox='0 0 36 72'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ff0059' fill-opacity='0.12'%3E%3Cpath d='M2 6h12L8 18 2 6zm18 36h12l-6 12-6-12z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .list {
     list-style: none;
     width: 100%;
     height: calc(100% - 60px);
-    background: aliceblue;
     border-radius: 10px;
-    border: 1px solid #ccc;
     display: flex;
-    margin: 0;
     padding: 0;
     justify-content: start;
     align-items: start;
     overflow: hidden;
     overflow-y: auto;
     flex-direction: column;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 0 auto;
+
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.58);
 }
 
 @media screen and  (min-width: 600px) {
     .list, .inputContainer {
-        max-width: 600px;
-        max-height: 400px;
+        max-width: 900px;
+        max-height: 600px;
     }
 }
 
 .listItem {
     margin: 5px;
-    background: green;
+    background: var(--color-primary);
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
     color: white;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
 .listItem p {
@@ -50,18 +55,26 @@
 
 .listItemME {
     background: white;
-    color: green;
-    border-color: green;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
     margin-left: auto;
 }
 
 .typingInput {
     width: 100%;
-    background: aliceblue;
     border-radius: 10px;
     height: 40px;
-    border: 1px solid #ccc;
     padding: 3px;
+
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.58);
+}
+
+.typingInput:focus {
+    outline: 2px solid var(--color-secondary);
 }
 
 .inputContainer {
@@ -76,13 +89,14 @@
 }
 
 .button {
-    background: green;
+    background: var(--color-secondary);
     color: white;
     border-radius: 10px;
     height: 40px;
     width: 80px;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.58);
     cursor: pointer;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .button:hover {
