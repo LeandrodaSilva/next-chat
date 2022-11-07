@@ -204,10 +204,16 @@ function Chat() {
       </ul>
 
       <div className={styles.inputContainer}>
+        <label htmlFor="typing-input" style={{display: "none"}}>
+          Type a message
+        </label>
         <input
+          id="typing-input"
           ref={messageInputRef}
           className={styles.typingInput}
           type="text"
+          placeholder="Type a message"
+          title="Type a message"
           onChange={(e) => {
             setInputText(e.target.value);
           }}
@@ -222,6 +228,7 @@ function Chat() {
           <button
             ref={sendButtonRef}
             className={styles.button}
+            title="Send message"
             type="button"
             onClick={sendMessage}
           >
@@ -232,6 +239,7 @@ function Chat() {
           <button
             className={styles.button}
             type="button"
+            title={stream ? "Stop recording" : "Record audio"}
             onClick={event => {
               if (stream) {
                 stream.getTracks().forEach(track => track.stop());
