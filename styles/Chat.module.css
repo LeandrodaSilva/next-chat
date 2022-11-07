@@ -15,7 +15,7 @@
     height: calc(100% - 60px);
     border-radius: 10px;
     display: flex;
-    padding: 0;
+    padding: 15px;
     justify-content: start;
     align-items: start;
     overflow: hidden;
@@ -28,6 +28,20 @@
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.58);
+}
+
+.list::-webkit-scrollbar {
+    width: 10px
+}
+
+.list::-webkit-scrollbar-track {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.list::-webkit-scrollbar-thumb {
+    background-color: var(--color-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 10px;
 }
 
 @media screen and  (min-width: 600px) {
