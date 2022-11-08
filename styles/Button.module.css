@@ -1,0 +1,29 @@
+.button {
+    background: var(--color-secondary);
+    color: white;
+    border-radius: 10px;
+    height: 40px;
+    width: 80px;
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    cursor: pointer;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.buttonText {
+    background: transparent;
+    color: var(--color-secondary);
+    border-radius: 10px;
+    height: 40px;
+    width: 80px;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.button:hover, .buttonText:hover {
+    filter: brightness(0.8);
+}
+
+.button:disabled, .buttonText:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}

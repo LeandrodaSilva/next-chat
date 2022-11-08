@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../../styles/Chat.module.css';
+import buttonStyles from '../../styles/Button.module.css';
 import MicrophoneIcon from "../Icons/Microphone/Microphone";
 import StopIcon from "../Icons/Stop/Stop";
 import SendIcon from "../Icons/Send/Send";
@@ -14,6 +15,7 @@ import useWebSocket from "react-use-websocket";
 import {inputTextState} from "../../recoil/atoms/inputTextState";
 import {userState} from "../../recoil/atoms/userState";
 import {getRandomName} from "../../hooks/useNameGenerator";
+import AudioRecorder from "../AudioRecorder/AudioRecorder";
 
 function Chat() {
   const listRef = useAutoScrollToBottom();
@@ -39,11 +41,7 @@ function Chat() {
       if (typeof event.data === 'string') {
         try {
           let message = JSON.parse(event.data);
-          if (message.type === "text") {
-            setMessages([...messages, message]);
-          } else if (message.type === "messages") {
-            setMessages([...messages, ...message.data]);
-          }
+          setMessages([...messages, message]);
         } catch (e) {
           setMessages([...messages, {
             type: "text",
@@ -58,7 +56,7 @@ function Chat() {
       }
     }
   });
-  const [record, stop] = useAudioRecorder(sendMessage);
+  const [record, send, cancel] = useAudioRecorder(sendMessage);
 
   React.useEffect(() => {
     if (user.name === "Anonymous") {
@@ -71,7 +69,7 @@ function Chat() {
 
   const toggleRecording = () => {
     if (isRecording) {
-      stop();
+      send();
       setIsRecording(false);
     } else {
       record();
@@ -103,12 +101,21 @@ function Chat() {
       </ul>
 
       <div className={styles.inputContainer}>
-        <InputMessage
-          onSend={handleSend}
-        />
+        {isRecording ? (
+          <AudioRecorder
+            onCancel={() => {
+              cancel();
+              setIsRecording(false);
+            }}
+          />
+        ) : (
+          <InputMessage
+            onSend={handleSend}
+          />
+        )}
         {textMessageLength > 0 && (
           <button
-            className={styles.button}
+            className={buttonStyles.button}
             title="Send message"
             type="button"
             onClick={handleSend}
@@ -118,13 +125,13 @@ function Chat() {
         )}
         {textMessageLength === 0 && (
           <button
-            className={styles.button}
+            className={buttonStyles.button}
             type="button"
             title={isRecording ? "Stop recording" : "Record audio"}
             onClick={toggleRecording}
           >
             {isRecording ? (
-              <StopIcon/>
+              <SendIcon/>
             ) : (
               <MicrophoneIcon/>
             )}

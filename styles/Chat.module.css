@@ -101,23 +101,3 @@
     margin-right: auto;
     margin-left: auto;
 }
-
-.button {
-    background: var(--color-secondary);
-    color: white;
-    border-radius: 10px;
-    height: 40px;
-    width: 80px;
-    border: 1px solid rgba(255, 255, 255, 0.58);
-    cursor: pointer;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-}
-
-.button:hover {
-    filter: brightness(0.8);
-}
-
-.button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
