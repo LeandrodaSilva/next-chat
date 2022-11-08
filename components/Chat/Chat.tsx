@@ -39,7 +39,11 @@ function Chat() {
       if (typeof event.data === 'string') {
         try {
           let message = JSON.parse(event.data);
-          setMessages([...messages, message]);
+          if (message.type === "text") {
+            setMessages([...messages, message]);
+          } else if (message.type === "messages") {
+            setMessages([...messages, ...message.data]);
+          }
         } catch (e) {
           setMessages([...messages, {
             type: "text",
