@@ -2,7 +2,11 @@ interface ISocketMessage {
   type: string;
   verb?: string;
   metadata?: {
-    user_name?: string;
+    user?: IUser;
   };
   data: any;
+}
+
+interface IUser {
+  name: string;
 }

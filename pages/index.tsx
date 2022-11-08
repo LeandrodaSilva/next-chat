@@ -1,8 +1,12 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Chat from "../components/Chat/Chat";
+import React, {useEffect} from "react";
+import {useSsrComplectedState} from "../hooks/useSSRCompletedState";
 
 export default function Home() {
+  const setSsrCompleted = useSsrComplectedState()
+  useEffect(setSsrCompleted, [setSsrCompleted])
   return (
     <div className={styles.container}>
       <Head>
@@ -13,7 +17,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Chat />
+          <Chat />
       </main>
 
       <footer className={styles.footer}>
