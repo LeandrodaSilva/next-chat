@@ -17,11 +17,12 @@ function InputMessage(props: Props) {
         Type a message
       </label>
       <input
+        autoComplete="off"
         id="typing-input"
         className={styles.typingInput}
         type="text"
         placeholder={l("Type a message")}
-        title="Type a message"
+        title={l("Type a message")}
         value={inputText}
         onChange={(e) => {
           setInputText(e.target.value);
