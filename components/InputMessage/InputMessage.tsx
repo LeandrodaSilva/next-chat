@@ -2,12 +2,14 @@ import React from 'react';
 import styles from "../../styles/Chat.module.css";
 import {useRecoilState} from "recoil";
 import {inputTextState} from "../../recoil/atoms/inputTextState";
+import useLocalization from "../../hooks/useLocalization";
 
 interface Props {
   onSend: () => void;
 }
 
 function InputMessage(props: Props) {
+  const [l] = useLocalization();
   const [inputText, setInputText] = useRecoilState<string>(inputTextState);
   return (
     <>
@@ -18,7 +20,7 @@ function InputMessage(props: Props) {
         id="typing-input"
         className={styles.typingInput}
         type="text"
-        placeholder="Type a message"
+        placeholder={l("Type a message")}
         title="Type a message"
         value={inputText}
         onChange={(e) => {

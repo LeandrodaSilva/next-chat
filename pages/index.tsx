@@ -3,10 +3,23 @@ import styles from '../styles/Home.module.css'
 import Chat from "../components/Chat/Chat";
 import React, {useEffect} from "react";
 import {useSsrComplectedState} from "../hooks/useSSRCompletedState";
+import {useRecoilState} from "recoil";
+import {langState} from "../recoil/atoms/langState";
+import {getUserLang} from "../hooks/useLocalization";
 
 export default function Home() {
-  const setSsrCompleted = useSsrComplectedState()
+  const [, setLang] = useRecoilState(langState);
+  const setSsrCompleted = useSsrComplectedState();
+
   useEffect(setSsrCompleted, [setSsrCompleted])
+
+  useEffect(() => {
+    const lang = getUserLang();
+    document.documentElement.lang = lang;
+    document.querySelector('html')?.setAttribute('lang', lang);
+    setLang(lang);
+  }, [setLang]);
+
   return (
     <div className={styles.container}>
       <Head>

@@ -2,7 +2,6 @@ import React from 'react';
 import styles from '../../styles/Chat.module.css';
 import buttonStyles from '../../styles/Button.module.css';
 import MicrophoneIcon from "../Icons/Microphone/Microphone";
-import StopIcon from "../Icons/Stop/Stop";
 import SendIcon from "../Icons/Send/Send";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {messagesState} from "../../recoil/atoms/messagesState";
@@ -16,12 +15,14 @@ import {inputTextState} from "../../recoil/atoms/inputTextState";
 import {userState} from "../../recoil/atoms/userState";
 import {getRandomName} from "../../hooks/useNameGenerator";
 import AudioRecorder from "../AudioRecorder/AudioRecorder";
+import useLocalization from "../../hooks/useLocalization";
+import {isRecordingState} from "../../recoil/atoms/isRecordingState";
 
 function Chat() {
   const listRef = useAutoScrollToBottom();
   const [messages, setMessages] = useRecoilState<ISocketMessage[]>(messagesState);
   const textMessageLength = useRecoilValue(textMessageLengthState);
-  const [isRecording, setIsRecording] = React.useState<boolean>(false);
+  const [isRecording, setIsRecording] = useRecoilState(isRecordingState);
   const [inputText, setInputText] = useRecoilState<string>(inputTextState);
   const [user, setUser] = useRecoilState<IUser>(userState);
   const {sendMessage} = useWebSocket("wss://socket.leandrodasilva.dev", {
@@ -33,7 +34,7 @@ function Chat() {
           metadata: {
             user,
           },
-          data: `Has joined the chat`,
+          data: l(`Has joined the chat`),
         }
       ));
     },
@@ -56,7 +57,8 @@ function Chat() {
       }
     }
   });
-  const [record, send, cancel] = useAudioRecorder(sendMessage);
+  const [record, send, cancel, pause, resume] = useAudioRecorder(sendMessage);
+  const [l] = useLocalization();
 
   React.useEffect(() => {
     if (user.name === "Anonymous") {
@@ -107,6 +109,12 @@ function Chat() {
               cancel();
               setIsRecording(false);
             }}
+            onPause={() => {
+              pause();
+            }}
+            onResume={() => {
+              resume();
+            }}
           />
         ) : (
           <InputMessage
@@ -127,7 +135,7 @@ function Chat() {
           <button
             className={buttonStyles.button}
             type="button"
-            title={isRecording ? "Stop recording" : "Record audio"}
+            title={isRecording ? l("Send audio") : l("Record audio")}
             onClick={toggleRecording}
           >
             {isRecording ? (

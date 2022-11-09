@@ -7,6 +7,9 @@
     border: 1px solid rgba(255, 255, 255, 0.58);
     cursor: pointer;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .buttonText {
@@ -17,10 +20,21 @@
     width: 80px;
     cursor: pointer;
     border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .button:hover, .buttonText:hover {
     filter: brightness(0.8);
+}
+
+.button:focus, .buttonText:focus {
+    outline: 2px solid var(--color-secondary);
+}
+
+.button:active, .buttonText:active {
+    filter: brightness(0.6);
 }
 
 .button:disabled, .buttonText:disabled {

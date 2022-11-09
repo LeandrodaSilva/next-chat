@@ -4,6 +4,7 @@ function useAudioRecorder(sendMessage: (message: string) => void) {
   const [stream, setStream] = React.useState<MediaStream | null>(null);
   const [encodedAudio, setEncodedAudio] = React.useState<string | null>(null);
   const [sendAudio, setSendAudio] = React.useState<boolean>(false);
+  const [audioData, setAudioData] = React.useState<any>([]);
 
   const record = useCallback(async () => {
     let stream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
@@ -18,7 +19,9 @@ function useAudioRecorder(sendMessage: (message: string) => void) {
     recorder.start();
 
     recorder.onstop = async (e) => {
-      let blob = new Blob(data, {type: 'audio/webm'});
+      let newAudioData = [...audioData, ...data];
+      setAudioData(newAudioData);
+      let blob = new Blob(newAudioData, {type: 'audio/webm'});
       blob.arrayBuffer().then((buffer) => {
         let array = new Uint8Array(buffer);
         // @ts-ignore
@@ -26,7 +29,7 @@ function useAudioRecorder(sendMessage: (message: string) => void) {
         setEncodedAudio(encoded);
       });
     }
-  }, []);
+  }, [audioData]);
 
   React.useEffect(() => {
     if (encodedAudio && sendAudio) {
@@ -46,10 +49,18 @@ function useAudioRecorder(sendMessage: (message: string) => void) {
 
   const cancel = () => {
     stream?.getTracks().forEach(track => track.stop());
-    setEncodedAudio(null);
+    setAudioData([]);
   }
 
-  return [record, send, cancel];
+  const pause = () => {
+    stream?.getTracks().forEach(track => track.stop());
+  }
+
+  const resume = () => {
+    record();
+  }
+
+  return [record, send, cancel, pause, resume];
 }
 
 export default useAudioRecorder;
