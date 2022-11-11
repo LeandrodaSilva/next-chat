@@ -14,24 +14,40 @@ function Audio(props: Props) {
   const audioRef = React.useRef<HTMLAudioElement|null>(null);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [currentTime, setCurrentTime] = React.useState(0);
+  const [duration, setDuration] = React.useState("00:00");
+  const [intervalID, setIntervalID] = React.useState<NodeJS.Timer|null>(null);
 
   React.useEffect(() => {
     if (isPlaying) {
-      audioRef.current?.play();
+      audioRef.current?.play().then(() => {
+        if (intervalID === null) {
+          let i = setInterval(() => {
+            setCurrentTime(audioRef.current?.currentTime || 0);
+            setIntervalID(i);
+          }, 100);
+        }
+      });
     } else {
       audioRef.current?.pause();
+      setIntervalID(null);
     }
-  }, [audioRef, isPlaying]);
+  }, [audioRef, intervalID, isPlaying]);
+
+  React.useEffect(() => {
+    if (intervalID) {
+      let i = setInterval(() => {
+        setCurrentTime(audioRef.current?.currentTime || 0);
+        setIntervalID(i);
+      }, 100);
+    }
+  }, [audioRef, intervalID]);
+
+  React.useLayoutEffect(() => {
+    setDuration(audioTimeToDate(currentTime))
+  }, [currentTime]);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
-  }
-
-  const getCurrentPlayingTime = () => {
-    setTimeout(() => {
-      setCurrentTime(audioRef.current?.currentTime || 0);
-    }, 100);
-    return audioRef.current?.currentTime;
   }
 
   const audioTimeToDate = (time: number) => {
@@ -73,11 +89,7 @@ function Audio(props: Props) {
       </span>
 
       <span className={styles.time}>
-        {isPlaying ? (
-          <span>{audioTimeToDate(getCurrentPlayingTime() || 0)}</span>
-        ) : (
-          <span>{audioTimeToDate(currentTime)}</span>
-        )}
+        <span>{duration}</span>
       </span>
     </div>
   );

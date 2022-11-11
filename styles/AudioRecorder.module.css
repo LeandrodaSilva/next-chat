@@ -22,7 +22,7 @@
 .time {
     position: absolute;
     z-index: -10;
-    left: 0;
+    left: 5px;
     top: 0;
     height: 38px;
     background: var(--color-secondary);
