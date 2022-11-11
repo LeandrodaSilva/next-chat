@@ -28,11 +28,21 @@ function useAudioRecorder(sendMessage: (message: string) => void) {
       blob.arrayBuffer().then((buffer) => {
         let array = new Uint8Array(buffer);
         // @ts-ignore
-        let encoded = btoa(String.fromCharCode(...array));
+        let encoded = arrayBufferToBase64(array);
         setEncodedAudio(encoded);
       });
     }
   }, [audioData]);
+
+  const arrayBufferToBase64 = ( buffer: ArrayBuffer ) => {
+    let binary = '';
+    let bytes = new Uint8Array( buffer );
+    let len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode( bytes[ i ] );
+    }
+    return window.btoa(binary);
+  }
 
   React.useEffect(() => {
     if (encodedAudio && sendAudio) {

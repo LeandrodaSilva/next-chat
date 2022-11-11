@@ -19,16 +19,16 @@ function AudioRecorder(props: Props) {
   const [recordingTime, setRecordingTime] = React.useState<number>(0);
   const [pauseTime, setPauseTime] = React.useState<boolean>(false);
   const [timeString, setTimeString] = React.useState<string>("00:00");
-  const recordingTimeTotal = 60;
+  const recordingTimeTotal = 60000;
 
   React.useEffect(() => {
     if (isRecording && !pauseTime) {
       const interval = setInterval(() => {
         const date = new Date(0);
-        date.setSeconds(recordingTime + 1);
-        setRecordingTime(recordingTime + 1);
+        date.setMilliseconds(recordingTime + 100);
+        setRecordingTime(recordingTime + 100);
         setTimeString(date.toTimeString().replace(/.*(\d{2}:\d{2}).*/, "$1"));
-      }, 1000);
+      }, 100);
       return () => clearInterval(interval);
     }
     if (pauseTime) {
@@ -40,7 +40,7 @@ function AudioRecorder(props: Props) {
     if (recordingTime >= recordingTimeTotal) {
       setIsRecording(false);
     }
-  }, [recordingTime]);
+  }, [recordingTime, setIsRecording]);
 
   return (
     <div className="relative w-full">

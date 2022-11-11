@@ -21,7 +21,8 @@ function InputMessage(props: Props) {
         id="typing-input"
         className={styles.typingInput}
         type="text"
-        title={l("Type a message")}
+        placeholder="Type a message"
+        title="Type a message"
         value={inputText}
         onChange={(e) => {
           setInputText(e.target.value);
