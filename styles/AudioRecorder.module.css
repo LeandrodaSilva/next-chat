@@ -31,3 +31,7 @@
     opacity: 0.2;
     transition: width 2s ease-in-out;
 }
+
+.timer {
+    color: var(--color-secondary);
+}

@@ -51,7 +51,6 @@ function AudioRecorder(props: Props) {
         }}
       />
       <div className={styles.container}>
-
         <button
           className={`${buttonStyles.buttonText} ${styles.noShadow}`}
           type="button"
@@ -59,9 +58,11 @@ function AudioRecorder(props: Props) {
         >
           <TrashIcon/>
         </button>
-        <span>
-        {timeString}
-      </span>
+
+        <span className={styles.timer}>
+          {timeString}
+        </span>
+
         <button
           className={`${buttonStyles.buttonText} ${styles.noShadow}`}
           type="button"

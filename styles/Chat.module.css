@@ -54,12 +54,11 @@
 
 .listItem {
     margin: 5px;
-    background: transparent;
+    background: white;
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
     color: var(--color-secondary);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
 .listItem p {

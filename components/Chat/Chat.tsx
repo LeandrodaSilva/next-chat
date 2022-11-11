@@ -17,6 +17,7 @@ import {getRandomName} from "../../hooks/useNameGenerator";
 import AudioRecorder from "../AudioRecorder/AudioRecorder";
 import useLocalization from "../../hooks/useLocalization";
 import {isRecordingState} from "../../recoil/atoms/isRecordingState";
+import List from "../List/List";
 
 function Chat() {
   const listRef = useAutoScrollToBottom();
@@ -95,13 +96,12 @@ function Chat() {
 
   return (
     <div className={styles.container}>
-      <ul
-        ref={listRef}
+      <List
         className={styles.list}
-      >
-        {messages.map((data, i) => <Message key={i} message={data}/>)}
-      </ul>
-
+        data={messages}
+        innerRef={listRef}
+        iterator={(data) => <Message message={data}/>}
+      />
       <div className={styles.inputContainer}>
         {isRecording ? (
           <AudioRecorder
@@ -109,12 +109,8 @@ function Chat() {
               cancel();
               setIsRecording(false);
             }}
-            onPause={() => {
-              pause();
-            }}
-            onResume={() => {
-              resume();
-            }}
+            onPause={pause}
+            onResume={resume}
           />
         ) : (
           <InputMessage

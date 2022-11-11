@@ -2,6 +2,7 @@ import React from 'react';
 import styles from "../../styles/Chat.module.css";
 import {useRecoilState} from "recoil";
 import {userState} from "../../recoil/atoms/userState";
+import Audio from "../Audio/Audio";
 
 interface Props {
   message: ISocketMessage
@@ -29,8 +30,10 @@ function Message(props: Props) {
       }
       const blob = new Blob([array], { type: "audio/webm" });
       return (
-        <li className={styles.listItem}>
-          <audio controls src={URL.createObjectURL(blob)} />
+        <li className={`${styles.listItem} ${user.name === metadata?.user?.name ? styles.listItemME : ""}`}>
+          <Audio
+            src={URL.createObjectURL(blob)}
+          />
         </li>
       );
     }
