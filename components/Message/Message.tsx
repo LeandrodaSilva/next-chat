@@ -22,39 +22,58 @@ function Message(props: Props) {
   } = message;
   const [user] = useRecoilState<IUser>(userState);
 
-  switch (type) {
-    case "audio": {
-      let decoded = atob(data);
-      let array = new Uint8Array(decoded.length);
-      for (let i = 0; i < decoded.length; i++) {
-        array[i] = decoded.charCodeAt(i);
-      }
-      const blob = new Blob([array], { type: "audio/webm" });
-      return (
-        <motion.li
-          className={`${styles.listItem} ${user.name === metadata?.user?.name ? styles.listItemME : ""}`}
-          animate={{ x: user.name === metadata?.user?.name ? -100 : 100 }}
-          transition={{ type: "spring", stiffness: 200 }}
-        >
+  const renderMessage = () => {
+    switch (type) {
+      case "audio": {
+        let decoded = atob(data);
+        let array = new Uint8Array(decoded.length);
+        for (let i = 0; i < decoded.length; i++) {
+          array[i] = decoded.charCodeAt(i);
+        }
+        const blob = new Blob([array], { type: "audio/webm" });
+        return (
           <Audio
             src={URL.createObjectURL(blob)}
           />
-        </motion.li>
-      );
+        );
+      }
+      case 'text':
+      default:
+        return (
+          <>
+            <p>{metadata?.user?.name}</p>
+            {data}
+          </>
+        )
     }
-    case 'text':
-    default:
-      return (
-        <motion.li
-          className={`${styles.listItem} ${user.name === metadata?.user?.name ? styles.listItemME : ""}`}
-          animate={{ x: user.name === metadata?.user?.name ? -100 : 100 }}
-          transition={{ type: "spring", stiffness: 200 }}
-        >
-          <p>{metadata?.user?.name}</p>
-          {data}
-        </motion.li>
-      )
   }
+
+  return (
+    <motion.li
+      className={`${styles.listItem} ${user.name === metadata?.user?.name ? styles.listItemME : ""}`}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{
+        x: user.name === metadata?.user?.name ? -100 : 100,
+        opacity: 1,
+        scale: 1
+      }}
+      transition={{
+        x: { duration: 0.3 },
+        default: {
+          duration: 0.3,
+          ease: [0, 0.71, 0.2, 1.01]
+        },
+        scale: {
+          type: "spring",
+          damping: 10,
+          stiffness: 200,
+          restDelta: 0.001
+        }
+      }}
+    >
+      {renderMessage()}
+    </motion.li>
+  )
 }
 
 export default Message;
