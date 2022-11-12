@@ -3,6 +3,7 @@ import styles from "../../styles/Chat.module.css";
 import {useRecoilState} from "recoil";
 import {userState} from "../../recoil/atoms/userState";
 import Audio from "../Audio/Audio";
+import { motion } from 'framer-motion';
 
 interface Props {
   message: ISocketMessage
@@ -30,20 +31,28 @@ function Message(props: Props) {
       }
       const blob = new Blob([array], { type: "audio/webm" });
       return (
-        <li className={`${styles.listItem} ${user.name === metadata?.user?.name ? styles.listItemME : ""}`}>
+        <motion.li
+          className={`${styles.listItem} ${user.name === metadata?.user?.name ? styles.listItemME : ""}`}
+          animate={{ x: user.name === metadata?.user?.name ? -100 : 100 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
           <Audio
             src={URL.createObjectURL(blob)}
           />
-        </li>
+        </motion.li>
       );
     }
     case 'text':
     default:
       return (
-        <li className={`${styles.listItem} ${user.name === metadata?.user?.name ? styles.listItemME : ""}`}>
+        <motion.li
+          className={`${styles.listItem} ${user.name === metadata?.user?.name ? styles.listItemME : ""}`}
+          animate={{ x: user.name === metadata?.user?.name ? -100 : 100 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
           <p>{metadata?.user?.name}</p>
           {data}
-        </li>
+        </motion.li>
       )
   }
 }
