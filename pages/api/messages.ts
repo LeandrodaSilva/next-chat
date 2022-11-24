@@ -1,27 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
-import sql from "mssql";
-
-type Data = {
-  name: any
-}
-
-const sqlConfig = {
-  user: "leproj.admin",
-  password: "79RdDJt779PMMuw",
-  database: "leproj_db",
-  server: 'leproj-sql.database.windows.net',
-  options: {
-    encrypt: true, // for azure
-    trustServerCertificate: true // change to true for local dev / self-signed certs
-  }
-}
+import DB from "../../utils/db";
+import Messages from "../../models/messages";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
-  await sql.connect(sqlConfig)
-  const result = await sql.query`select * from Messages`
-  res.status(200).json({name: result})
+  const result = await DB.select(Messages).run();
+  res.status(200).json(result)
 }
