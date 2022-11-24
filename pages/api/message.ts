@@ -25,9 +25,8 @@ export default async function handler(
 
   switch (method) {
     case 'POST':
-      // Send data to database
       await sql.connect(sqlConfig)
-      await sql.query`INSERT INTO Messages (Data) VALUES ('${body}');`
+      await sql.query`INSERT INTO Messages (Data) VALUES (${body});`
       res.status(200).json({message: 'OK'})
       break
   }
