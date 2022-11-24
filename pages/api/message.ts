@@ -21,12 +21,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  await sql.connect(sqlConfig)
-  // await sql.query`DELETE from Messages`
-  // await sql.query`ALTER TABLE Messages drop column ID`
-  // await sql.query`ALTER TABLE Messages ADD ID INT NOT NULL IDENTITY(1,1) PRIMARY KEY`
-//   await sql.query`INSERT INTO Messages (Data)
-// VALUES ('teste');`
-  const result = await sql.query`select * from Messages`
-  res.status(200).json({name: result})
+  const { method } = req;
+
+  switch (method) {
+    case 'POST':
+      // Send data to database
+      await sql.connect(sqlConfig)
+      await sql.query`INSERT INTO Messages (Data) VALUES ('${req.body}');`
+      res.status(200).json({name: 'Post request'})
+      break
+  }
 }
