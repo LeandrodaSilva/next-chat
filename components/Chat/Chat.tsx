@@ -18,11 +18,9 @@ import AudioRecorder from "../AudioRecorder/AudioRecorder";
 import useLocalization from "../../hooks/useLocalization";
 import {isRecordingState} from "../../recoil/atoms/isRecordingState";
 import List from "../List/List";
-import io from 'socket.io-client';
 
 function Chat() {
   const listRef = useAutoScrollToBottom();
-  const [socket, setSocket] = React.useState(null);
   const [messages, setMessages] = useRecoilState<ISocketMessage[]>(messagesState);
   const textMessageLength = useRecoilValue(textMessageLengthState);
   const [isRecording, setIsRecording] = useRecoilState(isRecordingState);
@@ -76,29 +74,6 @@ function Chat() {
   const [l] = useLocalization();
 
   React.useEffect(() => {
-   if (socket) {
-     // @ts-ignore
-     socket.on('connect', () => {
-       console.log('connected')
-     })
-
-     // @ts-ignore
-     socket.on('message', msg => {
-       console.log(msg)
-     })
-   } else {
-     socketInitializer()
-   }
-  }, [socket]);
-
-  const socketInitializer = async () => {
-    await fetch('/api/ws');
-
-    // @ts-ignore
-    setSocket(io());
-  }
-
-  React.useEffect(() => {
     if (user.name === "Anonymous") {
       setUser({
         ...user,
@@ -127,9 +102,6 @@ function Chat() {
         data: inputText,
       }
       sendMessage(JSON.stringify(message));
-      console.log("sending", message);
-      // @ts-ignore
-      socket.emit('message', message)
       setInputText("");
     }
   }

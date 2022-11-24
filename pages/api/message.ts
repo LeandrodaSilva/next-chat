@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import sql from "mssql";
 
 type Data = {
-  name: any
+  message: any
 }
 
 const sqlConfig = {
@@ -21,14 +21,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { method } = req;
+  const { method, body } = req;
 
   switch (method) {
     case 'POST':
       // Send data to database
       await sql.connect(sqlConfig)
-      await sql.query`INSERT INTO Messages (Data) VALUES ('${req.body}');`
-      res.status(200).json({name: 'Post request'})
+      await sql.query`INSERT INTO Messages (Data) VALUES ('${body}');`
+      res.status(200).json({message: 'OK'})
       break
   }
 }
