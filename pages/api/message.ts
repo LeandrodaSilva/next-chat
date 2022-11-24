@@ -5,6 +5,7 @@ import DB from "../../utils/db";
 
 type Data = {
   message: any
+  status: number
 }
 
 
@@ -20,7 +21,10 @@ export default async function handler(
         .columns("Data")
         .values(body)
         .run();
-      res.status(200).json({message: 'OK'})
+      res.status(200).json({
+        status: 200,
+        message: 'OK'
+      })
       break
   }
 }
