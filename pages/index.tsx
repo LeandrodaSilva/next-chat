@@ -6,6 +6,7 @@ import {useSsrComplectedState} from "../hooks/useSSRCompletedState";
 import {useRecoilState} from "recoil";
 import {langState} from "../recoil/atoms/langState";
 import {getUserLang} from "../hooks/useLocalization";
+import Fps from "../components/FPS/FPS";
 
 export default function Home() {
   const [, setLang] = useRecoilState(langState);
@@ -30,7 +31,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-          <Chat />
+        <Chat />
       </main>
 
       <footer className={styles.footer}>

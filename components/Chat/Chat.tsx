@@ -18,26 +18,40 @@ import AudioRecorder from "../AudioRecorder/AudioRecorder";
 import useLocalization from "../../hooks/useLocalization";
 import {isRecordingState} from "../../recoil/atoms/isRecordingState";
 import List from "../List/List";
+import io from 'socket.io-client';
 
 function Chat() {
   const listRef = useAutoScrollToBottom();
+  const [socket, setSocket] = React.useState(null);
   const [messages, setMessages] = useRecoilState<ISocketMessage[]>(messagesState);
   const textMessageLength = useRecoilValue(textMessageLengthState);
   const [isRecording, setIsRecording] = useRecoilState(isRecordingState);
   const [inputText, setInputText] = useRecoilState<string>(inputTextState);
   const [user, setUser] = useRecoilState<IUser>(userState);
+  const [alreadySent, setAlreadySent] = React.useState(false);
   const {sendMessage} = useWebSocket("wss://socket.leandrodasilva.dev", {
     retryOnError: true,
+    reconnectInterval: 1000,
+    reconnectAttempts: 10,
+    shouldReconnect: (closeEvent) => true,
     onOpen: (event) => {
-      sendMessage(JSON.stringify(
-        {
-          type: "text",
-          metadata: {
-            user,
-          },
-          data: l(`Has joined the chat`),
-        }
-      ));
+      if (alreadySent) return;
+      const timer = () => {
+        setTimeout(() => {
+          sendMessage(JSON.stringify(
+            {
+              type: "text",
+              metadata: {
+                user,
+              },
+              data: l(`Has joined the chat`),
+            }
+          ));
+          timer();
+        }, 500);
+      }
+      // timer();
+      setAlreadySent(true);
     },
     onMessage: (event) => {
       if (typeof event.data === 'string') {
@@ -60,6 +74,29 @@ function Chat() {
   });
   const [record, send, cancel, pause, resume] = useAudioRecorder(sendMessage);
   const [l] = useLocalization();
+
+  React.useEffect(() => {
+   if (socket) {
+     // @ts-ignore
+     socket.on('connect', () => {
+       console.log('connected')
+     })
+
+     // @ts-ignore
+     socket.on('message', msg => {
+       console.log(msg)
+     })
+   } else {
+     socketInitializer()
+   }
+  }, [socket]);
+
+  const socketInitializer = async () => {
+    await fetch('/api/ws');
+
+    // @ts-ignore
+    setSocket(io());
+  }
 
   React.useEffect(() => {
     if (user.name === "Anonymous") {
@@ -90,6 +127,9 @@ function Chat() {
         data: inputText,
       }
       sendMessage(JSON.stringify(message));
+      console.log("sending", message);
+      // @ts-ignore
+      socket.emit('message', message)
       setInputText("");
     }
   }

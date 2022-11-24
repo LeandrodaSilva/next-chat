@@ -13,8 +13,11 @@ interface Props {
   onResume?: () => void;
 }
 
+let time = 0;
+
 function AudioRecorder(props: Props) {
   const { onCancel } = props;
+  const timeRef = React.useRef<HTMLSpanElement>(null);
   const [isRecording, setIsRecording] = useRecoilState(isRecordingState);
   const [recordingTime, setRecordingTime] = React.useState<number>(0);
   const [pauseTime, setPauseTime] = React.useState<boolean>(false);
@@ -23,13 +26,26 @@ function AudioRecorder(props: Props) {
 
   React.useEffect(() => {
     if (isRecording && !pauseTime) {
-      const interval = setInterval(() => {
+      const counter = () => {
+        time = time + 100;
+
+        console.log(time);
+
+        if (time >= recordingTimeTotal) {
+          time = 0;
+        }
+
         const date = new Date(0);
-        date.setMilliseconds(recordingTime + 100);
-        setRecordingTime(recordingTime + 100);
+        date.setMilliseconds(time);
+
+        if (timeRef.current) {
+          timeRef.current.style.width = `${(recordingTime / recordingTimeTotal) * 100}%`;
+        }
+
+        setRecordingTime(time);
         setTimeString(date.toTimeString().replace(/.*(\d{2}:\d{2}).*/, "$1"));
-      }, 100);
-      return () => clearInterval(interval);
+      }
+      setInterval(() => counter(), 1000);
     }
     if (pauseTime) {
       props.onPause && props.onPause();
@@ -45,10 +61,11 @@ function AudioRecorder(props: Props) {
   return (
     <div className="relative w-full">
       <span
+        ref={timeRef}
         className={styles.time}
-        style={{
-          width: `${(recordingTime / recordingTimeTotal) * 100}%`,
-        }}
+        // style={{
+        //   width: `${(recordingTime / recordingTimeTotal) * 100}%`,
+        // }}
       />
       <div className={styles.container}>
         <button
