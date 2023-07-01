@@ -5,6 +5,7 @@ import {userState} from "../recoil/atoms/userState";
 
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import Image from "next/image";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -30,11 +31,13 @@ export default function LoginBtn() {
         <Menu as="div" className="relative inline-block text-left">
           <div>
             <Menu.Button className="inline-flex border-2 border-primary w-full rounded-full justify-center gap-x-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-50">
-              <img
+              <Image
                 className="inline-block h-14 w-14 rounded-full"
                 src={session?.user?.image ?? ''}
                 alt={session?.user?.name ?? ''}
                 referrerPolicy={'no-referrer'}
+                width={60}
+                height={60}
               />
             </Menu.Button>
           </div>
