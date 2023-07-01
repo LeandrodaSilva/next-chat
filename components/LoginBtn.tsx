@@ -75,13 +75,5 @@ export default function LoginBtn() {
       </>
     )
   }
-  return (
-    <>
-      <button
-        onClick={() => signIn()}
-      >
-        Sign in
-      </button>
-    </>
-  )
+  return null;
 }
