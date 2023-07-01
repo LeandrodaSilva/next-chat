@@ -56,6 +56,11 @@ function Chat() {
         try {
           let message = JSON.parse(event.data);
           setMessages([...messages, message]);
+          switch (message.data) {
+            case "/clear":
+              setMessages([]);
+              break;
+          }
         } catch (e) {
           setMessages([...messages, {
             type: "text",
