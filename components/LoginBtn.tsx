@@ -6,6 +6,7 @@ import {userState} from "../recoil/atoms/userState";
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import Image from "next/image";
+import Link from "next/link";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -55,7 +56,7 @@ export default function LoginBtn() {
               <div className="py-1">
                 <Menu.Item>
                   {({ active }: {active: boolean}) => (
-                    <a
+                    <Link
                       href="/api/auth/signout"
                       onClick={() => signOut()}
                       className={classNames(
@@ -64,7 +65,7 @@ export default function LoginBtn() {
                       )}
                     >
                       Sign out
-                    </a>
+                    </Link>
                   )}
                 </Menu.Item>
               </div>
