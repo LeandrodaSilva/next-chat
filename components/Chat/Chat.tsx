@@ -56,6 +56,13 @@ function Chat() {
         try {
           let message = JSON.parse(event.data);
           setMessages([...messages, message]);
+          switch (message.data) {
+            case "/clear-database":
+              setMessages([]);
+              break;
+            case "/clear":
+              setMessages([]);
+          }
         } catch (e) {
           setMessages([...messages, {
             type: "text",
@@ -103,14 +110,6 @@ function Chat() {
       }
       sendMessage(JSON.stringify(message));
       setInputText("");
-
-      switch (inputText) {
-        case "/clear-database":
-          setMessages([]);
-          break;
-        case "/clear":
-          setMessages([]);
-      }
     }
   }
 
