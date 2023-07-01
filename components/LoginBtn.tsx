@@ -33,7 +33,7 @@ export default function LoginBtn() {
           <div>
             <Menu.Button className="inline-flex border-2 border-primary w-full rounded-full justify-center gap-x-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-50">
               <Image
-                className="inline-block h-14 w-14 rounded-full"
+                className="inline-block h-11 w-11 rounded-full"
                 src={session?.user?.image ?? ''}
                 alt={session?.user?.name ?? ''}
                 referrerPolicy={'no-referrer'}
