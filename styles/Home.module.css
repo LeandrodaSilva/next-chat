@@ -7,3 +7,20 @@
 .main {
   height: 100%;
 }
+
+.header {
+  display: flex;
+  justify-content: end;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 5px 20px;
+  z-index: 1;
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    padding-top: 10px;
+  }
+}

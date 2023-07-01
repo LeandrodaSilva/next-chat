@@ -6,6 +6,7 @@ import {useSsrComplectedState} from "../hooks/useSSRCompletedState";
 import {useRecoilState} from "recoil";
 import {langState} from "../recoil/atoms/langState";
 import {getUserLang} from "../hooks/useLocalization";
+import LoginBtn from "../components/LoginBtn";
 
 export default function Home() {
   const [, setLang] = useRecoilState(langState);
@@ -28,6 +29,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <header className={styles.header}>
+        <LoginBtn/>
+      </header>
 
       <main className={styles.main}>
         <Chat />
