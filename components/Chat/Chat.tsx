@@ -103,6 +103,14 @@ function Chat() {
       }
       sendMessage(JSON.stringify(message));
       setInputText("");
+
+      switch (inputText) {
+        case "/clear-database":
+          setMessages([]);
+          break;
+        case "/clear":
+          setMessages([]);
+      }
     }
   }
 
