@@ -83,13 +83,13 @@ function Chat() {
   }, [setUser, user]);
 
   const toggleRecording = () => {
-    if (isRecording) {
+    // if (isRecording) {
       send();
-      setIsRecording(false);
-    } else {
-      record();
-      setIsRecording(true);
-    }
+      // setIsRecording(false);
+    // } else {
+    //   record();
+    //   setIsRecording(true);
+    // }
   }
 
   const handleSend = () => {
@@ -146,11 +146,11 @@ function Chat() {
             title={isRecording ? l("Send audio") : l("Record audio")}
             onClick={toggleRecording}
           >
-            {isRecording ? (
+            {/*{isRecording ? (*/}
               <SendIcon/>
-            ) : (
-              <MicrophoneIcon/>
-            )}
+            {/*) : (*/}
+            {/*  <MicrophoneIcon/>*/}
+            {/*)}*/}
           </button>
         )}
       </div>
