@@ -1,5 +1,5 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
 import Chat from "../components/Chat/Chat";
 import React, {useEffect} from "react";
 import {useSsrComplectedState} from "../hooks/useSSRCompletedState";
@@ -7,10 +7,17 @@ import {useRecoilState} from "recoil";
 import {langState} from "../recoil/atoms/langState";
 import {getUserLang} from "../hooks/useLocalization";
 import LoginBtn from "../components/LoginBtn";
+import lazy from "next/dynamic";
+import {userState} from "../recoil/atoms/userState";
+const LeprojComponentsWrapper = lazy(() => import("../components/LeprojComponents"), {
+  ssr: false
+});
+
 
 export default function Home() {
   const [, setLang] = useRecoilState(langState);
   const setSsrCompleted = useSsrComplectedState();
+  const [user, setUser] = useRecoilState<IUser>(userState);
 
   useEffect(setSsrCompleted, [setSsrCompleted])
 
@@ -39,6 +46,9 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
+        <LeprojComponentsWrapper
+          user={user}
+        />
       </footer>
     </div>
   )

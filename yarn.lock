@@ -231,6 +231,23 @@
   resolved "https://registry.npmjs.org/@js-joda/core/-/core-5.4.2.tgz"
   integrity sha512-QIDIZ9a0NfDStgD47VaTgwiPjlw1p4QPLwjOB/9+/DqIztoQopPNNAd+HdtQMHgE+ibP3dJacd8/TVL/A1RaaA==
 
+"@lit-labs/react@^1.2.0":
+  version "1.2.0"
+  resolved "https://pkgs.dev.azure.com/leproj/Components/_packaging/internal/npm/registry/@lit-labs/react/-/react-1.2.0.tgz"
+  integrity sha1-BqeRew27q0iSGTLNtfgYEWLkqks=
+
+"@lit-labs/ssr-dom-shim@^1.0.0", "@lit-labs/ssr-dom-shim@^1.1.0":
+  version "1.1.1"
+  resolved "https://pkgs.dev.azure.com/leproj/Components/_packaging/internal/npm/registry/@lit-labs/ssr-dom-shim/-/ssr-dom-shim-1.1.1.tgz"
+  integrity sha1-ZN804vEuaOeKxX5XHSXsB/pGDKk=
+
+"@lit/reactive-element@^1.3.0", "@lit/reactive-element@^1.6.0":
+  version "1.6.2"
+  resolved "https://pkgs.dev.azure.com/leproj/Components/_packaging/internal/npm/registry/@lit/reactive-element/-/reactive-element-1.6.2.tgz"
+  integrity sha1-wlZpD4Ly19D/sLHN9o3LHshs6ig=
+  dependencies:
+    "@lit-labs/ssr-dom-shim" "^1.0.0"
+
 "@motionone/animation@^10.13.1":
   version "10.14.0"
   resolved "https://registry.npmjs.org/@motionone/animation/-/animation-10.14.0.tgz"
@@ -422,6 +439,11 @@
   integrity sha512-ipwFvfy9b2m0gjHsIX0D6NAAwGCKokzf5zJqUZHUGt+7uWVlBIy6n2eyMgiKQ8ChLFVxic/zwQUhjLYNzbHDRA==
   dependencies:
     "@types/node" "*"
+
+"@types/trusted-types@^2.0.2":
+  version "2.0.3"
+  resolved "https://pkgs.dev.azure.com/leproj/Components/_packaging/internal/npm/registry/@types/trusted-types/-/trusted-types-2.0.3.tgz"
+  integrity sha1-oTb4OwdYaY30VOModZ29PURVUxE=
 
 "@typescript-eslint/parser@^5.21.0":
   version "5.42.0"
@@ -1821,6 +1843,13 @@ language-tags@^1.0.5:
   dependencies:
     language-subtag-registry "~0.3.2"
 
+leproj-components@^0.0.6:
+  version "0.0.6"
+  resolved "https://pkgs.dev.azure.com/leproj/Components/_packaging/internal/npm/registry/leproj-components/-/leproj-components-0.0.6.tgz"
+  integrity sha1-owcnCm+k9B9CCeRNF4etboQaCTU=
+  dependencies:
+    lit "^2.0.2"
+
 levn@^0.4.1:
   version "0.4.1"
   resolved "https://registry.npmjs.org/levn/-/levn-0.4.1.tgz"
@@ -1833,6 +1862,31 @@ lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/lilconfig/-/lilconfig-2.0.6.tgz"
   integrity sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==
+
+lit-element@^3.3.0:
+  version "3.3.2"
+  resolved "https://pkgs.dev.azure.com/leproj/Components/_packaging/internal/npm/registry/lit-element/-/lit-element-3.3.2.tgz"
+  integrity sha1-mRO/IguFBl8OXxu4h4zETza1DPo=
+  dependencies:
+    "@lit-labs/ssr-dom-shim" "^1.1.0"
+    "@lit/reactive-element" "^1.3.0"
+    lit-html "^2.7.0"
+
+lit-html@^2.7.0:
+  version "2.7.4"
+  resolved "https://pkgs.dev.azure.com/leproj/Components/_packaging/internal/npm/registry/lit-html/-/lit-html-2.7.4.tgz"
+  integrity sha1-bXUAGXfCBmg2hbnXZZSlFq/aKVQ=
+  dependencies:
+    "@types/trusted-types" "^2.0.2"
+
+lit@^2.0.2:
+  version "2.7.5"
+  resolved "https://pkgs.dev.azure.com/leproj/Components/_packaging/internal/npm/registry/lit/-/lit-2.7.5.tgz"
+  integrity sha1-YLyCmQz60WnULNeGmZNW3PebA18=
+  dependencies:
+    "@lit/reactive-element" "^1.6.0"
+    lit-element "^3.3.0"
+    lit-html "^2.7.0"
 
 locate-path@^6.0.0:
   version "6.0.0"
